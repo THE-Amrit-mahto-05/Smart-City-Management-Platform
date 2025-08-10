@@ -55,7 +55,7 @@ It integrates **real-time** and **historical data** from multiple city systemsâ€
 | **Auth**           | JWT / OAuth 2.0 / LDAP |
 | **Notifications**  | Twilio (SMS), SendGrid (Email), Push APIs |
 | **Hosting**        | Docker, Kubernetes, AWS / GCP / Azure |
-| **Version Control**| GitHub / GitLab |
+
 
 ---
 ##  Project Structure
