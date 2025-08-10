@@ -61,11 +61,11 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ##  Project Structure
 
 ``` smart-city-management/
-| │
-| ├── backend/            |       # Backend APIs & business logic
-| │   ├── controllers/    |      # API request handlers
-| │   ├── models/               # Database schemas & models
-│   ├── routes/               # API endpoint definitions
+| 
+|── backend/                   # Backend APIs & business logic
+|   ├── controllers/           # API request handlers
+|   ├── models/                # Database schemas & models
+│   ├── routes/                # API endpoint definitions
 │   └── server.js              # Main backend server entry point
 │
 ├── frontend/                 # Frontend dashboard & UI
