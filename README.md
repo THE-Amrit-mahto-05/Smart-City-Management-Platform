@@ -13,3 +13,5 @@ It integrates **real-time** and **historical data** from multiple city systems�
 **Real-Time Alerts & Notifications** – Immediate response to emergencies or anomalies.
 **Resource Allocation Optimization** – AI/ML-based recommendations for routing, energy balancing, and more.
 **Role-Based Access & Security** – Admin, Operator, and Viewer roles with secure authentication.
+
+---
