@@ -122,13 +122,20 @@ npm start
 | POST | /api/alerts   | Trigger new alert   |
 
 ###  Security
-```
--JWT-based authentication
 
--Role-based access control
+- JWT-based authentication
 
--Encrypted password storage (bcrypt)
+- Role-based access control
 
--HTTPS for secure data transfer
-```
+- Encrypted password storage (bcrypt)
+
+- HTTPS for secure data transfer
+
+###  UI Preview
+
+- Admin Dashboard – Real-time data with charts and maps
+- Alert Console – Threshold breach notifications
+- Analytics Reports – Historical trends & predictions
+
+
 
