@@ -60,7 +60,8 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ---
 ##  Project Structure
 
-``` bash smart-city-management/
+```  smart-city-management/
+bash
 | 
 |── backend/                   # Backend APIs & business logic
 |   ├── controllers/           # API request handlers
