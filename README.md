@@ -90,8 +90,45 @@ It integrates **real-time** and **historical data** from multiple city systems�
 
 ## 🚀 Getting Started
 
-### 1️⃣ Clone the repository
+###  Clone the repository
 ```
 git clone https://github.com/your-username/smart-city-management.git
 cd smart-city-management
 ```
+### Backend Setup
+```
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend Setup
+```
+cd frontend
+npm install
+npm start
+```
+
+### Environment Variables
+```
+.env.example
+```
+### API Endpoints 
+```
+| Method | Endpoint          | Description         |
+| ------ | ----------------- | ------------------- |
+| `POST` | `/api/auth/login` | User login          |
+| `GET`  | `/api/dashboard`  | Get city statistics |
+| `POST` | `/api/alerts`     | Trigger new alert   |
+```
+###  Security
+```
+-JWT-based authentication
+
+-Role-based access control
+
+-Encrypted password storage (bcrypt)
+
+-HTTPS for secure data transfer
+```
+
