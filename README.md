@@ -79,4 +79,11 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ├── .env.example              # Example environment variables
 ├── docker-compose.yml        # Docker services configuration
 ├── package.json              # Project dependencies & scripts
-└── README.md                 # Project overview & documentation 
+└── README.md                 # Project overview & documentation
+
+
+---
+
+```
+# This is now outside the code block
+
