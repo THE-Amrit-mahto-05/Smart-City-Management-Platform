@@ -35,11 +35,28 @@ It integrates **real-time** and **historical data** from multiple city systemsâ€
 - Waste collection route planning
 - Energy grid balancing
 
-  ### 5. **Security & Access Control**
+### 5. **Security & Access Control**
 - Role-based dashboards (Admin, Environment Officer, Utility Officer, Traffic Control)
 - JWT/OAuth authentication with secure storage
 
 ### 6. **Integration with City Systems**
 - APIs for utilities, emergency services, and transport networks
+
+---
+
+## Tech Stack
+
+| Component          | Technologies |
+|--------------------|--------------|
+| **Frontend**       | React.js / Vue.js / Angular |
+| **Backend**        | Node.js / Django / Flask / Spring Boot |
+| **Database**       | MongoDB / PostgreSQL / MySQL |
+| **Visualization**  | D3.js / Chart.js / Power BI / Grafana |
+| **Auth**           | JWT / OAuth 2.0 / LDAP |
+| **Notifications**  | Twilio (SMS), SendGrid (Email), Push APIs |
+| **Hosting**        | Docker, Kubernetes, AWS / GCP / Azure |
+| **Version Control**| GitHub / GitLab |
+
+---
 
 
