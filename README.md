@@ -114,13 +114,13 @@ npm start
 .env.example
 ```
 ### API Endpoints 
-```
+
 | Method | Endpoint          | Description         |
 | ------ | ----------------- | ------------------- |
 | `POST` | `/api/auth/login` | User login          |
 | `GET`  | `/api/dashboard`  | Get city statistics |
 | `POST` | `/api/alerts`     | Trigger new alert   |
-```
+
 ###  Security
 ```
 -JWT-based authentication
