@@ -60,7 +60,7 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ---
 ##  Project Structure
 
-smart-city-management/
+``` smart-city-management/
 | │
 | ├── backend/            |       # Backend APIs & business logic
 | │   ├── controllers/    |      # API request handlers
@@ -79,4 +79,4 @@ smart-city-management/
 ├── .env.example              # Example environment variables
 ├── docker-compose.yml        # Docker services configuration
 ├── package.json              # Project dependencies & scripts
-└── README.md                 # Project overview & documentation
+└── README.md                 # Project overview & documentation ```
