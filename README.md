@@ -15,3 +15,6 @@ It integrates **real-time** and **historical data** from multiple city systemsâ€
 **Role-Based Access & Security** â€“ Admin, Operator, and Viewer roles with secure authentication.
 
 ---
+
+## Key Features
+- Real-time monitoring of city services
