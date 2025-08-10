@@ -117,9 +117,9 @@ npm start
 
 | Method | Endpoint          | Description         |
 | ------ | ----------------- | ------------------- |
-| `POST` | `/api/auth/login` | User login          |
-| `GET`  | `/api/dashboard`  | Get city statistics |
-| `POST` | `/api/alerts`     | Trigger new alert   |
+| POST | /api/auth/login| User login          |
+| GET | /api/dashboard  | Get city statistics |
+| POST | /api/alerts   | Trigger new alert   |
 
 ###  Security
 ```
