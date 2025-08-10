@@ -85,5 +85,13 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ---
 
 ```
-# This is now outside the code block
 
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the repository
+```
+git clone https://github.com/your-username/smart-city-management.git
+cd smart-city-management
+```
