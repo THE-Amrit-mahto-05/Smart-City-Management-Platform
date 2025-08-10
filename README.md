@@ -61,21 +61,22 @@ It integrates **real-time** and **historical data** from multiple city systems�
 ##  Project Structure
 
 smart-city-management/
-│── backend/ # Backend APIs & business logic
-│ ├── controllers/
-│ ├── models/
-│ ├── routes/
-│ └── server.js
 │
-│── frontend/ # Frontend dashboard & UI
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ └── App.js
+├── backend/                  # Backend APIs & business logic
+│   ├── controllers/          # API request handlers
+│   ├── models/               # Database schemas & models
+│   ├── routes/               # API endpoint definitions
+│   └── server.js              # Main backend server entry point
 │
-│── docs/ # Documentation (SRS, diagrams, etc.)
-│── .env.example # Example environment variables
-│── docker-compose.yml
-│── package.json
-│── README.md
-
+├── frontend/                 # Frontend dashboard & UI
+│   ├── src/
+│   │   ├── components/        # Reusable UI components
+│   │   ├── pages/             # Application pages
+│   │   └── App.js             # Main React application entry point
+│
+├── docs/                     # Documentation (SRS, diagrams, reports)
+│
+├── .env.example              # Example environment variables
+├── docker-compose.yml        # Docker services configuration
+├── package.json              # Project dependencies & scripts
+└── README.md                 # Project overview & documentation
