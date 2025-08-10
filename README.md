@@ -58,5 +58,24 @@ It integrates **real-time** and **historical data** from multiple city systems�
 | **Version Control**| GitHub / GitLab |
 
 ---
+##  Project Structure
 
+smart-city-management/
+│── backend/ # Backend APIs & business logic
+│ ├── controllers/
+│ ├── models/
+│ ├── routes/
+│ └── server.js
+│
+│── frontend/ # Frontend dashboard & UI
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ └── App.js
+│
+│── docs/ # Documentation (SRS, diagrams, etc.)
+│── .env.example # Example environment variables
+│── docker-compose.yml
+│── package.json
+│── README.md
 
