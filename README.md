@@ -17,4 +17,29 @@ It integrates **real-time** and **historical data** from multiple city systemsâ€
 ---
 
 ## Key Features
+### 1. **Admin Dashboard**
 - Real-time monitoring of city services
+- Interactive graphs, charts, and maps
+- Emergency response control panel
+
+### 2. **Alerts & Notifications**
+- Auto-trigger alerts for threshold breaches
+- Multi-channel alerts: SMS, Email, In-app
+
+### 3. **Analytics & Reports**
+- Daily/Weekly/Monthly reports
+- Predictive analytics for planning
+
+### 4. **Optimization Modules**
+- Traffic signal optimization
+- Waste collection route planning
+- Energy grid balancing
+
+  ### 5. **Security & Access Control**
+- Role-based dashboards (Admin, Environment Officer, Utility Officer, Traffic Control)
+- JWT/OAuth authentication with secure storage
+
+### 6. **Integration with City Systems**
+- APIs for utilities, emergency services, and transport networks
+
+
