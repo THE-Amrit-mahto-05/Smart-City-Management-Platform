@@ -1,0 +1,136 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+enum UserRole {
+  ADMIN
+  OPERATOR
+  VIEWER
+}
+
+enum AlertStatus {
+  PENDING
+  ACKNOWLEDGED
+  RESOLVED
+}
+
+enum AlertSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  role      UserRole @default(VIEWER)
+  createdAt DateTime @default(now())
+  alerts       AlertMeta[]
+  reports      Report[]
+  auditLogs    AuditLog[]
+  notifications Notification[]
+}
+
+model TrafficData {
+  id              Int      @id @default(autoincrement())
+  location        String
+  timestamp       DateTime
+  vehicleCount    Int
+  avgSpeed        Float
+  congestionLevel String
+  @@index([location, timestamp])
+}
+
+model AirQualityData {
+  id        Int      @id @default(autoincrement())
+  location  String
+  timestamp DateTime
+  AQI       Int
+  pm25      Float
+  pm10      Float
+  co2       Float
+  o3        Float
+  @@index([location, timestamp])
+}
+
+model EnergyUsageData {
+  id              Int      @id @default(autoincrement())
+  zone            String
+  timestamp       DateTime
+  powerConsumption Float
+  peakLoad        Float
+  @@index([zone, timestamp])
+}
+
+model WasteCollectionData {
+  id          Int      @id @default(autoincrement())
+  binId       String
+  location    String
+  timestamp   DateTime
+  fillLevel   Int
+  lastEmptied DateTime?
+  @@index([binId])
+  @@index([location])
+}
+
+model AlertMeta {
+  id        Int      @id @default(autoincrement())
+  type      String
+  severity  String
+  status    String
+  createdBy Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [createdBy], references: [id])
+  @@index([status, severity, createdAt])
+}
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  type        String
+  period      String
+  generatedBy Int
+  filePath    String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [generatedBy], references: [id])
+  @@index([period, createdAt])
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  actorId   Int
+  action    String
+  targetId  Int?
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [actorId], references: [id])
+  @@index([timestamp, actorId])
+}
+
+model Location {
+  id       Int      @id @default(autoincrement())
+  name     String
+  latitude Float
+  longitude Float
+  type     String 
+  }
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  message   String
+  status    NotificationStatus @default(UNREAD)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
