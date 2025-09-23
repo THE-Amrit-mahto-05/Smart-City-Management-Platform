@@ -1,4 +1,4 @@
-const AirQualityData = require('../models/AirQualityData');
+const AirQualityData = require('../../database/mongo/models/AirQualityData');
 exports.addAirQualityData = async (req, res) => {
     try {
         const data = new AirQualityData(req.body);

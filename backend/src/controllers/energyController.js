@@ -1,7 +1,6 @@
-const pdfParse = require('pdf-parse');
 const fs = require('fs');
-const EnergyUsageData = require('../database/mongo/models/EnergyUsageData');
-
+const pdfParse = require('pdf-parse');
+const EnergyUsageData = require('../../database/mongo/models/EnergyUsageData');
 function normalizeRecord(record) {
   return {
     date: record.Date ? new Date(record.Date) : null,
@@ -14,8 +13,10 @@ function normalizeRecord(record) {
     hydroEstimated: Number(record['Hydro Generation Estimated (in MU)'] || 0)
   };
 }
-
-exports.uploadEnergyData = async (req, res) => {
+function parsePdfToJson(pdfText) {
+  return []; 
+}
+const uploadEnergyData = async (req, res) => {
   try {
     const pdfBuffer = fs.readFileSync(req.file.path); 
     const data = await pdfParse(pdfBuffer);
@@ -29,3 +30,13 @@ exports.uploadEnergyData = async (req, res) => {
     res.status(500).json({ message: "Failed to upload energy data", error });
   }
 };
+
+const getEnergyData = async (req, res) => {
+  try {
+    const data = await EnergyUsageData.find(); 
+    res.status(200).json({ data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+module.exports = { uploadEnergyData, getEnergyData };

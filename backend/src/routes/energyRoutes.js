@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { addEnergyData, getEnergyData } = require('../controllers/energyController');
+const { uploadEnergyData, getEnergyData } = require('../controllers/energyController');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); 
 
-router.post('/', addEnergyData);  
-router.get('/', getEnergyData);   
+router.post('/', upload.single('pdf'), uploadEnergyData);  
+router.get('/', getEnergyData);
 
 module.exports = router;

@@ -32,105 +32,124 @@ enum NotificationStatus {
   READ
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  password String
-  role      UserRole @default(VIEWER)
-  createdAt DateTime @default(now())
-  alerts       AlertMeta[]
-  reports      Report[]
-  auditLogs    AuditLog[]
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  password      String
+  role          UserRole       @default(VIEWER)
+  createdAt     DateTime       @default(now())
+  alerts        AlertMeta[]
+  reports       Report[]
+  auditLogs     AuditLog[]
   notifications Notification[]
+
+  @@index([role])
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  name      String
+  latitude  Float
+  longitude Float
+  type      String
+
+  trafficData   TrafficData[]
+  airQuality    AirQualityData[]
+  energyData    EnergyUsageData[]
+  wasteBins     WasteCollectionData[]
 }
 
 model TrafficData {
-  id              Int      @id @default(autoincrement())
-  location        String
+  id              Int       @id @default(autoincrement())
+  locationId      Int
+  location        Location  @relation(fields: [locationId], references: [id])
   timestamp       DateTime
   vehicleCount    Int
   avgSpeed        Float
   congestionLevel String
-  @@index([location, timestamp])
+
+  @@index([locationId, timestamp])
 }
 
 model AirQualityData {
-  id        Int      @id @default(autoincrement())
-  location  String
+  id        Int       @id @default(autoincrement())
+  locationId Int
+  location  Location  @relation(fields: [locationId], references: [id])
   timestamp DateTime
   AQI       Int
   pm25      Float
   pm10      Float
   co2       Float
   o3        Float
-  @@index([location, timestamp])
+
+  @@index([locationId, timestamp])
 }
 
 model EnergyUsageData {
-  id              Int      @id @default(autoincrement())
-  zone            String
-  timestamp       DateTime
+  id               Int       @id @default(autoincrement())
+  locationId       Int
+  location         Location  @relation(fields: [locationId], references: [id])
+  timestamp        DateTime
   powerConsumption Float
-  peakLoad        Float
-  @@index([zone, timestamp])
+  peakLoad         Float
+
+  @@index([locationId, timestamp])
 }
 
 model WasteCollectionData {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   binId       String
-  location    String
+  locationId  Int
+  location    Location  @relation(fields: [locationId], references: [id])
   timestamp   DateTime
   fillLevel   Int
   lastEmptied DateTime?
+
   @@index([binId])
-  @@index([location])
+  @@index([locationId])
 }
 
 model AlertMeta {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   type      String
-  severity  String
-  status    String
+  severity  AlertSeverity
+  status    AlertStatus
   createdBy Int
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [createdBy], references: [id])
+  createdAt DateTime      @default(now())
+  user      User          @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
   @@index([status, severity, createdAt])
 }
 
 model Report {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   type        String
   period      String
   generatedBy Int
   filePath    String
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [generatedBy], references: [id])
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [generatedBy], references: [id], onDelete: Cascade)
+
   @@index([period, createdAt])
 }
 
 model AuditLog {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   actorId   Int
   action    String
   targetId  Int?
-  timestamp DateTime @default(now())
-  user      User     @relation(fields: [actorId], references: [id])
+  timestamp DateTime  @default(now())
+  user      User      @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
   @@index([timestamp, actorId])
 }
 
-model Location {
-  id       Int      @id @default(autoincrement())
-  name     String
-  latitude Float
-  longitude Float
-  type     String 
-  }
 model Notification {
-  id        Int      @id @default(autoincrement())
+  id        Int                 @id @default(autoincrement())
   userId    Int
   message   String
-  status    NotificationStatus @default(UNREAD)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  status    NotificationStatus  @default(UNREAD)
+  createdAt DateTime            @default(now())
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

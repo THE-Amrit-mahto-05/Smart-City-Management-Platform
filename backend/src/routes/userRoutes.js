@@ -5,12 +5,15 @@ const {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser,
+  deleteUser
 } = require('../controllers/userController');
 
-router.post('/', createUser);      
-router.get('/', getUsers);        
-router.get('/:id', getUserById);  
-router.put('/:id', updateUser);    
-router.delete('/:id', deleteUser); 
+const { authenticate, authorize } = require('../../middleware/auth');
+
+router.post('/', authenticate, authorize(['ADMIN']), createUser);
+router.get('/', authenticate, authorize(['ADMIN']), getUsers);
+router.get('/:id', authenticate, authorize(['ADMIN']), getUserById);
+router.put('/:id', authenticate, authorize(['ADMIN']), updateUser);
+router.delete('/:id', authenticate, authorize(['ADMIN']), deleteUser);
+
 module.exports = router;

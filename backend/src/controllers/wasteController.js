@@ -1,4 +1,4 @@
-const WasteManagementData = require('../../database/mongo/WasteManagementData');
+const WasteCollectionData = require('../../database/mongo/models/WasteCollectionData');
 
 exports.addWasteData = async (req, res) => {
   try {
