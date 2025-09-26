@@ -1,8 +1,19 @@
-// src/components/PrivateRoute.jsx
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
-export default function PrivateRoute({ children }) {
-  const token = localStorage.getItem("token");
-  if (!token) return <Navigate to="/login" />;
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>; // Or spinner component
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
   return children;
-}
+};
+
+export default PrivateRoute;

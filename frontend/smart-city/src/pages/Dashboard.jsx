@@ -1,31 +1,28 @@
-// src/pages/Dashboard.jsx
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from 'react';
+import useAuth from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard() {
-  const [user, setUser] = useState(null);
+const Dashboard = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://localhost:3000/api/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setUser(res.data))
-      .catch((err) => console.error(err));
-  }, []);
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      {user ? (
-        <div>
-          <p>Welcome, {user.name} ({user.role})</p>
-          <p>Email: {user.email}</p>
-        </div>
-      ) : (
-        <p>Loading user info...</p>
-      )}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold mb-4">Welcome, {user?.name || user?.email || 'User'}!</h1>
+      <p className="mb-8">This is your Smart City Management Dashboard.</p>
+      <button
+        onClick={handleLogout}
+        className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+      >
+        Logout
+      </button>
     </div>
   );
-}
+};
+
+export default Dashboard;

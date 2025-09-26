@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
-const SignupPage = () => {
-  const { signup } = useAuth();
+const LoginPage = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: ''
   });
@@ -24,9 +23,8 @@ const SignupPage = () => {
     setLoading(true);
     setError(null);
     try {
-      await signup(formData.name, formData.email, formData.password);
-      alert('Signup successful! Please login.');
-      navigate('/login');
+      await login(formData.email, formData.password);
+      navigate('/dashboard'); // Redirect after successful login
     } catch (errMsg) {
       setError(errMsg);
     } finally {
@@ -35,20 +33,11 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-700">
       <div className="max-w-md w-full bg-white p-8 rounded shadow">
-        <h2 className="text-center text-2xl font-bold mb-6">Signup</h2>
+        <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">Login</h2>
         {error && <div className="mb-4 text-red-600">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="name"
-            type="text"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full p-2 border rounded"
-          />
           <input
             name="email"
             type="email"
@@ -71,18 +60,18 @@ const SignupPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-indigo-600 text-white p-2 rounded hover:bg-indigo-700 transition"
           >
-            {loading ? 'Signing up...' : 'Signup'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
         <p className="mt-4 text-center">
-          Already have an account?{' '}
+          Don't have an account?{' '}
           <span
-            className="text-blue-500 cursor-pointer hover:underline"
-            onClick={() => navigate('/login')}
+            className="text-indigo-500 cursor-pointer hover:underline"
+            onClick={() => navigate('/signup')}
           >
-            Login
+            Sign up
           </span>
         </p>
       </div>
@@ -90,4 +79,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default LoginPage;
