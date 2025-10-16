@@ -48,7 +48,7 @@ It integrates **real-time** and **historical data** from multiple city systemsâ€
 
 | Component          | Technologies |
 |--------------------|--------------|
-| **Frontend**       | React.js / Vue.js / Angular |
+| **Frontend**       | React.native |
 | **Backend**        | Node.js / Django / Flask / Spring Boot |
 | **Database**       | MongoDB / PostgreSQL / MySQL |
 | **Visualization**  | D3.js / Chart.js / Power BI / Grafana |
