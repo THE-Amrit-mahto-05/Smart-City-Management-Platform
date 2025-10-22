@@ -100,8 +100,6 @@ subtitle: {
   textAlign: 'center', 
   marginTop: 5,       
 },
-
-
   buttonRow: {
   flexDirection: 'row',
   justifyContent: 'center',  
