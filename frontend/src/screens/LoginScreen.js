@@ -11,6 +11,7 @@ export default function LoginScreen({ navigation }) {
       const { data } = await login(form);
       await AsyncStorage.setItem("token", data.token);
       alert("Login successful!");
+      navigation.replace("Dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
