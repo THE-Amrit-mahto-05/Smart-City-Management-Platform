@@ -27,7 +27,14 @@
     },
     "plugins": [
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      [
+  "expo-location",
+  {
+    "locationAlwaysAndWhenInUsePermission": "Allow Smart City app to access your location for real-time traffic updates and navigation."
+  }
+]
+
     ]
   }
 }
