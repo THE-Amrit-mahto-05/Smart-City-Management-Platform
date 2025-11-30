@@ -9,6 +9,7 @@ import TrafficDashboard from "../screens/TrafficDashboard";
 import EnergyDashboard from "../screens/EnergyDashboard";
 import WasteDashboard from "../screens/WasteDashboard";
 import EmergencyDashboard from "../screens/EmergencyDashboard";
+import TabNavigator from "./TabNavigator";
 
 
 
@@ -20,11 +21,7 @@ export default function AuthNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="AirPollutionDashboard" component={AirPollutionScreen} />
-        <Stack.Screen name="TrafficDashboard" component={TrafficDashboard} />
-        <Stack.Screen name="EnergyDashboard" component={EnergyDashboard} />
-        <Stack.Screen name="WasteDashboard" component={WasteDashboard} />
+        <Stack.Screen name="MainTabs" component={TabNavigator} />
         <Stack.Screen name="EmergencyDashboard" component={EmergencyDashboard} />
       </Stack.Navigator>
     </NavigationContainer>

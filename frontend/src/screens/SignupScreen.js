@@ -34,15 +34,19 @@ export default function SignupScreen({ navigation }) {
   const roles = ["Admin", "Officer", "Viewer"];
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <MaterialCommunityIcons name="account-plus-outline" size={60} color={theme.colors.primary} />
+    <View style={[styles.container, 
+    { backgroundColor: theme.colors.background }]}>
+      <ScrollView contentContainerStyle={styles.scrollContent} 
+      showsVerticalScrollIndicator={false}>
+      <View style={styles.header}>
+          <MaterialCommunityIcons name="account-plus-outline" size={60} 
+          color={theme.colors.primary} />
           <Text style={[styles.title, { color: theme.colors.primary }]}>Create Account</Text>
           <Text style={[styles.subtitle, { color: theme.colors.placeholder }]}>Join the Smart City Network</Text>
         </View>
 
-        <Surface style={[styles.card, { backgroundColor: theme.colors.surface }]} elevation={4}>
+        <Surface style={[styles.card, { 
+          backgroundColor: theme.colors.surface }]} elevation={4}>
           <TextInput
             label="Full Name"
             mode="outlined"
@@ -114,16 +118,35 @@ export default function SignupScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { flexGrow: 1, justifyContent: "center", padding: 20 },
-  header: { alignItems: "center", marginBottom: 30 },
-  title: { fontSize: 28, fontWeight: "bold", marginTop: 10 },
-  subtitle: { fontSize: 16 },
+  scrollContent: { 
+    flexGrow: 1, 
+    justifyContent: "center", 
+    padding: 20 },
+  header: { 
+    alignItems: "center", 
+    marginBottom: 30 },
+  title: { 
+    fontSize: 28, 
+    fontWeight: "bold", 
+    marginTop: 10 },
+  subtitle: { 
+    fontSize: 16 },
 
-  card: { padding: 24, borderRadius: 24 },
+  card: { 
+    padding: 24, 
+    borderRadius: 24 },
 
-  input: { marginBottom: 16, backgroundColor: "transparent" },
-  label: { fontWeight: "bold", marginBottom: 12, marginTop: 8 },
-  roleRow: { flexDirection: "row", marginBottom: 20, flexWrap: "wrap", gap: 8 },
+  input: { 
+    marginBottom: 16, 
+    backgroundColor: "transparent" },
+  label: { 
+    fontWeight: "bold", 
+    marginBottom: 12, 
+    marginTop: 8 },
+  roleRow: { 
+    flexDirection: "row", 
+    marginBottom: 20,
+     flexWrap: "wrap", gap: 8 },
   roleChip: { marginRight: 4 },
 
   button: { marginTop: 8, borderRadius: 12 },

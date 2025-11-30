@@ -26,14 +26,19 @@ export default function TrafficDashboard() {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
-          Alert.alert("Permission denied", "Please enable location permissions.");
+          Alert.alert("Permission denied", "Defaulting to city center.");
+          setLocation({ latitude: 28.6139, longitude: 77.2090, speed: 0 });
           setLoading(false);
           return;
         }
+        const locationPromise = Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,});
 
-        const current = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
-        });
+        const timeoutPromise = new Promise((resolve, reject) =>
+          setTimeout(() => reject(new Error("Location request timed out")), 10000)
+        );
+
+        const current = await Promise.race([locationPromise, timeoutPromise]);
 
         setLocation(current.coords);
         setAccuracy(current.coords.accuracy);
@@ -48,7 +53,8 @@ export default function TrafficDashboard() {
 
       } catch (err) {
         console.error("Location error:", err);
-        Alert.alert("Error fetching location", "Could not get current location.");
+        Alert.alert("Location Error", "Using default location due to error.")
+        setLocation({ latitude: 28.6139, longitude: 77.2090, speed: 0 });
         setLoading(false);
       }
     })();
@@ -56,10 +62,10 @@ export default function TrafficDashboard() {
 
   if (loading || !location) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>Locating Traffic Data...</Text>
-      </View>
+    <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+    <ActivityIndicator size="large" color={theme.colors.primary} />
+    <Text style={[styles.loadingText, { color: theme.colors.text }]}>Locating Traffic Data...</Text>
+    </View>
     );
   }
 
@@ -105,6 +111,39 @@ export default function TrafficDashboard() {
           />
         </MapView>
         <Surface style={[styles.infoCard, { backgroundColor: theme.colors.surface }]} elevation={4}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Signal Optimization</Text>
+            <Chip icon="check-circle" mode="outlined" style={{ borderColor: theme.colors.primary }}>Active</Chip>
+          </View>
+
+          <Surface style={[styles.card, { backgroundColor: theme.colors.surface }]} elevation={2}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Green Wave Efficiency</Text>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', color: theme.colors.primary }}>94%</Text>
+            </View>
+            <Text style={{ color: theme.colors.placeholder, marginBottom: 10 }}>
+              AI-driven signal timing is currently saving an estimated 15 minutes of travel time per vehicle in the city center.
+            </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+              <View style={{ alignItems: 'center' }}>
+                <MaterialCommunityIcons name="timer-outline" size={30} color="#4ADE80" />
+                <Text style={{ fontSize: 12, marginTop: 4 }}>-12% Wait</Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <MaterialCommunityIcons name="car-speed-limiter" size={30} color="#60A5FA" />
+                <Text style={{ fontSize: 12, marginTop: 4 }}>+8% Flow</Text>
+              </View>
+              <View style={{ alignItems: 'center' }}>
+                <MaterialCommunityIcons name="leaf" size={30} color="#F472B6" />
+                <Text style={{ fontSize: 12, marginTop: 4 }}>-5% CO2</Text>
+              </View>
+            </View>
+          </Surface>
+
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Live Incidents</Text>
+            <Chip icon="radio-tower" mode="outlined">Live Feed</Chip>
+          </View>
           <View style={styles.infoRow}>
             <View>
               <Text style={[styles.infoLabel, { color: theme.colors.placeholder }]}>Current Speed</Text>

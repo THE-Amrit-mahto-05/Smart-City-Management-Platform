@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Dimensions } from "react-native";
 import { TextInput, Button, Text, ActivityIndicator, Surface, useTheme, ProgressBar, Chip } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { OPENWEATHER_API_KEY } from "@env";
+import { OPENWEATHER_API_KEY, OPENWEATHER_BASE_URL } from "@env";
 import CustomHeader from "../components/CustomHeader";
 import ChartCard from "../components/ChartCard";
 
 const { width } = Dimensions.get("window");
 
 export default function AirPollutionScreen() {
-const theme = useTheme();
-const [city, setCity] = useState("New Delhi");
-const [data, setData] = useState(null);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
+  const theme = useTheme();
+  const [city, setCity] = useState("New Delhi");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchAirData = async () => {
-    if (!city.trim()) {
+    if (!city.trim()) { 
       Alert.alert("Input Error", "Please enter a city name");
       return;
     }
@@ -26,20 +26,27 @@ const [error, setError] = useState(null);
     setData(null);
 
     try {
-      // 1. Get Coordinates
-      const geoRes = await fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${OPENWEATHER_API_KEY}`
-      );
+      if (!OPENWEATHER_API_KEY) {
+        throw new Error("API Key missing. Please configure .env file.");
+      }
+      if (!OPENWEATHER_BASE_URL) { // Add check for base URL
+        throw new Error("OpenWeather Base URL missing. Please configure .env file.");
+      }
+      const geoUrl = `${OPENWEATHER_BASE_URL}/geo/1.0/direct?q=${city}&limit=1&appid=${OPENWEATHER_API_KEY}`;
+      const geoRes = await fetch(geoUrl);
 
-      if (!geoRes.ok) throw new Error("Failed to fetch coordinates");
+      if (!geoRes.ok) {
+        if (geoRes.status === 401) throw new Error("Invalid API Key");
+        throw new Error("Failed to fetch coordinates");
+      }
 
       const geoData = await geoRes.json();
       if (!geoData.length) throw new Error("City not found");
 
       const { lat, lon, name, country } = geoData[0];
-      const airRes = await fetch(
-        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}`
-      );
+
+      const airUrl = `${OPENWEATHER_BASE_URL}/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}`;
+      const airRes = await fetch(airUrl);
 
       if (!airRes.ok) throw new Error("Failed to fetch air quality data");
 
@@ -55,8 +62,8 @@ const [error, setError] = useState(null);
       });
     } catch (err) {
       console.error(err);
-      if (!OPENWEATHER_API_KEY || err.message.includes("401")) {
-        Alert.alert("API Error", "Using demo data (Check API Key)");
+      if (err.message.includes("API Key") || err.message.includes("401")) {
+        Alert.alert("API Error", "Using demo data (Check API Key/Env)");
         setData({
           city: city,
           country: "XX",
@@ -89,15 +96,19 @@ const [error, setError] = useState(null);
         <Text style={styles.pollutantName}>{name.toUpperCase()}</Text>
         <Text style={styles.pollutantValue}>{value.toFixed(1)} <Text style={styles.unit}>μg/m³</Text></Text>
       </View>
-      <ProgressBar progress={Math.min(value / max, 1)} color={theme.colors.primary} style={styles.progress} />
+      <ProgressBar progress={Math.min(value / max, 1)}
+        color={theme.colors.primary} style={styles.progress} />
     </View>
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container,
+    { backgroundColor: theme.colors.background }]}>
       <CustomHeader title="Air Quality" showBack />
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}>
 
         <Surface style={[styles.searchCard, { backgroundColor: theme.colors.surface }]} elevation={1}>
           <TextInput
@@ -172,17 +183,45 @@ const [error, setError] = useState(null);
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  scrollContent: { padding: 16, paddingBottom: 40 },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 40
+  },
 
-  searchCard: { padding: 16, borderRadius: 16, marginBottom: 16 },
-  input: { backgroundColor: "transparent" },
+  searchCard: {
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 16
+  },
+  input: {
+    backgroundColor: "transparent"
+  },
 
-  loader: { padding: 40, alignItems: "center" },
-  errorBox: { padding: 16, borderRadius: 8, marginBottom: 16 },
+  loader: {
+    padding: 40,
+    alignItems: "center"
+  },
+  errorBox: {
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 16
+  },
 
-  aqiCard: { padding: 20, borderRadius: 20, marginBottom: 16 },
-  aqiHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
-  cityText: { fontSize: 22, fontWeight: "bold", color: "#fff" },
+  aqiCard: {
+    padding: 20, borderRadius: 20,
+    marginBottom: 16
+  },
+  aqiHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20
+  },
+  cityText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#fff"
+  },
   timeChip: { backgroundColor: "rgba(255,255,255,0.2)" },
 
   aqiBody: { flexDirection: "row", alignItems: "center", marginBottom: 10 },

@@ -24,7 +24,8 @@ export default function LoginScreen({ navigation }) {
     try {
       const { data } = await login(form);
       await AsyncStorage.setItem("token", data.token);
-      navigation.replace("Dashboard");
+      await AsyncStorage.setItem("userRole", data.user.role); 
+      navigation.replace("MainTabs");
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {
@@ -33,7 +34,8 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container,
+     { backgroundColor: theme.colors.background }]}>
       <View style={styles.header}>
         <MaterialCommunityIcons name="city-variant-outline" size={80} color={theme.colors.primary} />
         <Text style={[styles.title, { color: theme.colors.primary }]}>Smart City</Text>
@@ -89,39 +91,51 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    justifyContent: "center", 
-    padding: 20 },
-  header: { 
-    alignItems: "center", 
-    marginBottom: 40 },
-  title: { 
-    fontSize: 32, 
-    fontWeight: "bold", 
-    letterSpacing: 1 },
-  subtitle: { 
-    fontSize: 16, 
-    letterSpacing: 2, 
-    textTransform: "uppercase" },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 40
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    letterSpacing: 1
+  },
+  subtitle: {
+    fontSize: 16,
+    letterSpacing: 2,
+    textTransform: "uppercase"
+  },
 
-  card: { 
-    padding: 24, 
-    borderRadius: 24 },
-  cardTitle: { 
-    fontSize: 24, 
-    fontWeight: "bold", 
-    marginBottom: 4 },
-  cardSub: { 
-    fontSize: 14, 
-    marginBottom: 24 },
+  card: {
+    padding: 24,
+    borderRadius: 24
+  },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 4
+  },
+  cardSub: {
+    fontSize: 14,
+    marginBottom: 24
+  },
 
-  input: { 
-    marginBottom: 16, 
-    backgroundColor: "transparent" },
-  button: { marginTop: 8, 
-    borderRadius: 12 },
+  input: {
+    marginBottom: 16,
+    backgroundColor: "transparent"
+  },
+  button: {
+    marginTop: 8,
+    borderRadius: 12
+  },
 
-  footer: { flexDirection: "row", 
-    justifyContent: "center", marginTop: 24 },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center", marginTop: 24
+  },
 });

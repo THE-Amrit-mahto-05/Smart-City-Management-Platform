@@ -7,7 +7,12 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  Alert, 
 } from "react-native";
+
+import CustomHeader from "../components/CustomHeader";
+
+import { EMBER_API_URL, EMBER_API_KEY } from "@env";
 
 export default function EnergyDashboard() {
   const [country, setCountry] = useState("IND");
@@ -20,102 +25,119 @@ export default function EnergyDashboard() {
   const [selectedYear, setSelectedYear] = useState(null);
 
   const fetchEnergyData = () => {
-  setLoading(true);
-  const API = `https://api.ember-energy.org/v1/electricity-generation/yearly?entity_code=${country}&is_aggregate_series=false&start_date=${startYear}&end_date=${endYear}&api_key=f0340e41-9374-1903-7729-07dab1877ded`;
-  fetch(API).then((response) => response.json())
-  .then((data) => {
-  const arr = data.data || [];
-  setEnergyData(arr);
+    setLoading(true);
+    const API = `${EMBER_API_URL}?entity_code=${country}&is_aggregate_series=false&start_date=${startYear}&end_date=${endYear}&api_key=${EMBER_API_KEY}`;
 
-  const uniqueYears = [...new Set(arr.map((item) => item.date))].sort();
-  setYears(uniqueYears);
+    fetch(API)
+      .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then((data) => {
+        const arr = (data && Array.isArray(data.data)) ? data.data : [];
 
-  setSelectedYear(null);
-  setLoading(false);})
-  .catch((error) => {
-  console.error("Error fetching energy data:", error);
-  setLoading(false)})};
+        if (arr.length === 0) {
+          Alert.alert("No Data", "No energy data found for the specified parameters.");
+        }
 
-  const filteredData = selectedYear? energyData.filter((item) => item.date === selectedYear): [];
+        setEnergyData(arr);
+
+        const uniqueYears = [...new Set(arr.map((item) => item.date))].sort();
+        setYears(uniqueYears);
+
+        setSelectedYear(null);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching energy data:", error);
+        Alert.alert("Error", "Failed to fetch energy data. Please check your connection or input.");
+        setLoading(false);
+      });
+  };
+
+  const filteredData = selectedYear ? energyData.filter((item) => item.date === selectedYear) : [];
 
   return (
     <View style={styles.container}>
-    <Text style={styles.header}>Global Energy Analyzer</Text>
-    <Text style={styles.subtext}>Search by Country & Year Range</Text>
+      <CustomHeader title="Global Energy Analyzer" showBack />
+      <View style={styles.contentContainer}>
+        <Text style={styles.subtext}>Search by Country & Year Range</Text>
 
-    <TextInput
-    style={styles.input}
-    placeholder="Enter Country Code (e.g., IND, USA)"
-    placeholderTextColor="#666"
-    value={country}
-    onChangeText={setCountry}/>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Country Code (e.g., IND, USA)"
+          placeholderTextColor="#666"
+          value={country}
+          onChangeText={setCountry} />
 
-    <View style={styles.row}>
-    <TextInput
-    style={[styles.input, { flex: 1, marginRight: 5 }]}
-    placeholder="Start Year"
-    keyboardType="numeric"
-    value={startYear}
-    onChangeText={setStartYear}/>
+        <View style={styles.row}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginRight: 5 }]}
+            placeholder="Start Year"
+            keyboardType="numeric"
+            value={startYear}
+            onChangeText={setStartYear} />
 
-    <TextInput
-    style={[styles.input, { flex: 1, marginLeft: 5 }]}
-    placeholder="End Year"
-    keyboardType="numeric"
-    value={endYear}
-    onChangeText={setEndYear}/>
-    </View>
-
-      <TouchableOpacity style={styles.fetchBtn} onPress={fetchEnergyData}>
-      <Text style={styles.fetchBtnText}>Fetch Energy Data</Text>
-      </TouchableOpacity>
-
-      {loading && (
-        <View style={styles.loader}>
-          <ActivityIndicator size="large" color="#4A90E2" />
-          <Text style={{ marginTop: 10 }}>Fetching Data...</Text>
+          <TextInput
+            style={[styles.input, { flex: 1, marginLeft: 5 }]}
+            placeholder="End Year"
+            keyboardType="numeric"
+            value={endYear}
+            onChangeText={setEndYear} />
         </View>
-      )}
 
-      <FlatList
-        data={years}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginVertical: 20 }}
-        keyExtractor={(item) => item.toString()}
-        renderItem={({ item }) => (
-        <TouchableOpacity
-        style={[
-        styles.yearButton,
-        selectedYear === item && styles.yearButtonActive,]}
-        onPress={() => setSelectedYear(item)}>
-        <Text
-        style={[
-        styles.yearText,
-        selectedYear === item && styles.yearTextActive,]}>
-        {item}
-        </Text>
+        <TouchableOpacity style={styles.fetchBtn} onPress={fetchEnergyData}>
+          <Text style={styles.fetchBtnText}>Fetch Energy Data</Text>
         </TouchableOpacity>
-        )}
-      />
 
-      {selectedYear && (
-      <FlatList
-      data={filteredData}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={({ item }) => (
-      <View style={styles.card}>
-      <Text style={styles.cardTitle}>{item.series}</Text>
-      <Text style={styles.cardValue}>
-      {item.generation_twh} TWh ({item.share_of_generation_pct}%)
-      </Text>
-     </View> )}/>)}
+        {loading && (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#4A90E2" />
+            <Text style={{ marginTop: 10 }}>Fetching Data...</Text>
+          </View>
+        )}
+
+        <FlatList
+          data={years}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginVertical: 20 }}
+          keyExtractor={(item) => item.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[
+                styles.yearButton,
+                selectedYear === item && styles.yearButtonActive,]}
+              onPress={() => setSelectedYear(item)}>
+              <Text
+                style={[
+                  styles.yearText,
+                  selectedYear === item && styles.yearTextActive,]}>
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+
+        {selectedYear && (
+          <FlatList
+            data={filteredData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>{item.series}</Text>
+                <Text style={styles.cardValue}>
+                  {item.generation_twh} TWh ({item.share_of_generation_pct}%)
+                </Text>
+              </View>)} />)}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: "#fff" },
+  contentContainer: { padding: 20, flex: 1 },
   header: { fontSize: 24, fontWeight: "bold", marginBottom: 8 },
   subtext: { color: "#555", marginBottom: 15 },
 

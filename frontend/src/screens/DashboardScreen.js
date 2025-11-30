@@ -4,86 +4,113 @@ import { useTheme, Surface } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import CustomHeader from "../components/CustomHeader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
 export default function DashboardScreen({ navigation }) {
   const theme = useTheme();
+  const [role, setRole] = React.useState(null);
 
-  const sections = [
+  React.useEffect(() => {
+    const getRole = async () => {
+      const r = await AsyncStorage.getItem("userRole");
+      setRole(r);
+    };
+    getRole();
+  }, []);
+
+  const allSections = [
     {
       title: "Air Quality",
       subtitle: "AQI & Sensors",
-      route: "AirPollutionDashboard",
+      route: "Air", 
       icon: "weather-windy",
-      color: ["#4ADE80", "#22C55E"]
+      color: ["#4ADE80", "#22C55E"],
+      roles: ["Admin", "Officer", "Viewer"]
     },
     {
       title: "Traffic",
       subtitle: "Live Congestion",
-      route: "TrafficDashboard",
+      route: "Traffic", 
       icon: "traffic-light",
-      color: ["#F87171", "#EF4444"]
+      color: ["#F87171", "#EF4444"],
+      roles: ["Admin", "Officer", "Viewer"]
     },
     {
       title: "Energy",
       subtitle: "Grid & Usage",
-      route: "EnergyDashboard",
+      route: "Energy", 
       icon: "lightning-bolt",
-      color: ["#60A5FA", "#3B82F6"]
+      color: ["#60A5FA", "#3B82F6"],
+      roles: ["Admin", "Officer", "Viewer"]
     },
     {
       title: "Waste",
       subtitle: "Smart Bins",
-      route: "WasteDashboard",
+      route: "Waste", 
       icon: "trash-can",
-      color: ["#A78BFA", "#8B5CF6"]
+      color: ["#A78BFA", "#8B5CF6"],
+      roles: ["Admin", "Officer"]
     },
     {
       title: "Emergency",
       subtitle: "Alerts & SOS",
-      route: "EmergencyDashboard",
+      route: "EmergencyDashboard", 
       icon: "alert-circle",
-      color: ["#FBBF24", "#F59E0B"]
+      color: ["#FBBF24", "#F59E0B"],
+      roles: ["Admin", "Officer"]
     },
   ];
 
+  const sections = allSections.filter(item => !role || item.roles.includes(role));
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("userRole");
+      navigation.replace("Login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <CustomHeader title="City Overview" />
+    <CustomHeader title="City Overview" rightIcon="logout" onRightPress={handleLogout} />
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.welcomeSection}>
-          <Text style={[styles.welcomeTitle, { color: theme.colors.text }]}>Hello, Admin</Text>
-          <Text style={[styles.welcomeSubtitle, { color: theme.colors.placeholder }]}>
-            Here is what's happening in your city today.
-          </Text>
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsScroll}>
-          <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
-            <MaterialCommunityIcons name="thermometer" size={24} color={theme.colors.primary} />
-            <Text style={styles.statValue}>24°C</Text>
-            <Text style={styles.statLabel}>Avg Temp</Text>
-          </Surface>
-          <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
-            <MaterialCommunityIcons name="water-percent" size={24} color={theme.colors.primary} />
-            <Text style={styles.statValue}>65%</Text>
-            <Text style={styles.statLabel}>Humidity</Text>
-          </Surface>
-          <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
-            <MaterialCommunityIcons name="account-group" size={24} color={theme.colors.primary} />
-            <Text style={styles.statValue}>1.2M</Text>
-            <Text style={styles.statLabel}>Population</Text>
-          </Surface>
-        </ScrollView>
-        <View style={styles.gridContainer}>
-          {sections.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate(item.route)}
-              style={styles.gridItemWrapper}
-            >
+      <View style={styles.welcomeSection}>
+      <Text style={[styles.welcomeTitle, { color: theme.colors.text }]}>Hello, {role || "User"}</Text>
+      <Text style={[styles.welcomeSubtitle, { color: theme.colors.placeholder }]}>
+        Here is what's happening in your city today.
+      </Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsScroll}>
+      <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
+      <MaterialCommunityIcons name="thermometer" size={24} color={theme.colors.primary} />
+      <Text style={styles.statValue}>24°C</Text>
+      <Text style={styles.statLabel}>Avg Temp</Text>
+      </Surface>
+      <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
+      <MaterialCommunityIcons name="water-percent" size={24} color={theme.colors.primary} />
+      <Text style={styles.statValue}>65%</Text>
+      <Text style={styles.statLabel}>Humidity</Text>
+      </Surface>
+      <Surface style={[styles.statCard, { backgroundColor: theme.colors.surface }]}>
+      <MaterialCommunityIcons name="account-group" size={24} color={theme.colors.primary} />
+      <Text style={styles.statValue}>1.2M</Text>
+      <Text style={styles.statLabel}>Population</Text>
+      </Surface>
+      </ScrollView>
+      <View style={styles.gridContainer}>
+      {sections.map((item, index) => (
+      <TouchableOpacity
+      key={index}
+      activeOpacity={0.9}
+      onPress={() => navigation.navigate(item.route)}
+      style={styles.gridItemWrapper}
+>
               <LinearGradient
                 colors={item.color}
                 start={{ x: 0, y: 0 }}
