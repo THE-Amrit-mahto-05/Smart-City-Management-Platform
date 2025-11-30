@@ -53,7 +53,7 @@ Based on current bin fill levels, the AI suggests skipping Sector 4 Park today.
 </Text>
 <View style={{ backgroundColor: theme.colors.background, padding: 10, borderRadius: 8 }}>
 <Text style={{ fontWeight: 'bold' }}>Suggested Path:</Text>
-<Text style={{ fontSize: 12, marginTop: 4 }}>Depot -> Main Market (80%) -> Bus Stand (90%) -> City Center (20%) -> Depot</Text>
+<Text style={{ fontSize: 12, marginTop: 4 }}>Depot - Main Market (80%) - Bus Stand (90%) - City Center (20%) - Depot</Text>
  </View>
 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-end' }}>
 <Text style={{ color: theme.colors.primary, fontWeight: 'bold' }}>Est. Savings: 2.4 km / 1.5 L Fuel</Text>
