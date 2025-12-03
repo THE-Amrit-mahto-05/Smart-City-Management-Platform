@@ -122,7 +122,7 @@ smart-city-management/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ###  Clone the repository
 ```
