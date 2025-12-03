@@ -114,11 +114,7 @@ smart-city-management/
 │   ├── app.json
 │   ├── package.json
 │   └── package-lock.json
-│
-├── .env.example                    # Example environment variables
-├── docker-compose.yml              # Docker configuration (optional)
 ├── package.json                    # Root-level scripts / tools
-├── Idea.md                         # Project idea document
 └── README.md                       # Project overview
 
 
